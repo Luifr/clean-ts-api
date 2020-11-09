@@ -33,6 +33,7 @@
 		"operator-linebreak": ["error", "after"],
 		"object-curly-spacing": ["error", "always"],
 		"brace-style": ["error", "stroustrup"],
-		"no-multiple-empty-lines": ["error", {"max": 3, "maxEOF": 0, "maxBOF": 1}]
+		"no-multiple-empty-lines": ["error", {"max": 3, "maxEOF": 0, "maxBOF": 1}],
+		"eol-last": ["error", "always"]
 	}
 }
