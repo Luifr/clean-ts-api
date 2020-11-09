@@ -4,8 +4,8 @@
   "description": "Complete Typescript API with TDD, Clean Architecture, Design Patterns and SOLID.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "jest",
-    "test:staged": "jest",
+    "test": "jest --passWithNoTests",
+    "test:staged": "jest --passWithNoTests",
     "lint": "eslint src/** --ext .ts",
     "lint-fix": "eslint src/** --ext .ts --fix"
   },
