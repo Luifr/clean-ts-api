@@ -34,6 +34,13 @@
 		"object-curly-spacing": ["error", "always"],
 		"brace-style": ["error", "stroustrup"],
 		"no-multiple-empty-lines": ["error", {"max": 3, "maxEOF": 0, "maxBOF": 1}],
-		"eol-last": ["error", "always"]
+		"eol-last": ["error", "always"],
+		"no-multi-spaces": ["error", {"ignoreEOLComments": true}],
+		"no-var": "error",
+		"prefer-const": ["error", {"destructuring": "all"}],
+		"spaced-comment": ["error", "always"],
+		"arrow-parens": ["error", "always"],
+		"no-trailing-spaces": "error",
+		"max-lines": ["error", {"max": 300, "skipComments": true, "skipBlankLines": true}]
 	}
 }
