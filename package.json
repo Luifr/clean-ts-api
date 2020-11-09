@@ -1,20 +1,30 @@
 {
-  "name": "clean-ts-api",
-  "version": "1.0.0",
-  "description": "Complete Typescript API with TDD, Clean Architecture, Design Patterns and SOLID.",
-  "main": "dist/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Luifr/clean-ts-api.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Luifr/clean-ts-api/issues"
-  },
-  "homepage": "https://github.com/Luifr/clean-ts-api#readme"
+	"name": "clean-ts-api",
+	"version": "1.0.0",
+	"description": "Complete Typescript API with TDD, Clean Architecture, Design Patterns and SOLID.",
+	"main": "dist/index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"husky": {
+		"hooks": {
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Luifr/clean-ts-api.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Luifr/clean-ts-api/issues"
+	},
+	"homepage": "https://github.com/Luifr/clean-ts-api#readme",
+	"devDependencies": {
+		"@commitlint/cli": "^11.0.0",
+		"@commitlint/config-conventional": "^11.0.0",
+		"husky": "^4.3.0"
+	}
 }
