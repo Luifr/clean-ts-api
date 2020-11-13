@@ -1,11 +1,11 @@
 {
 	"env": {
-		"browser": true,
-		"es2021": true
+		"node": true,
+		"es2021": true,
+		"jest": true
 	},
 	"extends": [
-		"eslint:recommended",
-		"plugin:@typescript-eslint/recommended"
+		"eslint:recommended"
 	],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
@@ -39,7 +39,6 @@
 		"no-var": "error",
 		"prefer-const": ["error", {"destructuring": "all"}],
 		"spaced-comment": ["error", "always"],
-		"arrow-parens": ["error", "always"],
 		"no-trailing-spaces": "error",
 		"max-lines": ["error", {"max": 300, "skipComments": true, "skipBlankLines": true}]
 	}
