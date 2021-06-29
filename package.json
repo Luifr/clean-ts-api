@@ -20,7 +20,7 @@
       "npm run lint-fix",
       "npm run test:staged"
     ]
-  },
+	},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Luifr/clean-ts-api.git"
