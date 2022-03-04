@@ -1,4 +1,4 @@
-import { AddAccount, AddAccountModel } from '@domain/usecases/add-account';
+import { AddAccount } from '@domain/usecases/add-account';
 import { InvalidParamError } from '@errors/invalid-param';
 import { MissingParamError } from '@errors/missing-param';
 import { badRequest } from '@helpers/http-helper';
@@ -12,7 +12,7 @@ export class SignUpController implements IController{
 		private readonly addAccount: AddAccount
 	) { }
 
-	handle(httpRequest: IHttpRequest): IHttpResponse {
+	async handle(httpRequest: IHttpRequest): Promise<IHttpResponse> {
 		const requiredFields = ['name', 'email', 'password', 'passwordConfirmation'];
 
 		const { body } = httpRequest;
@@ -32,17 +32,16 @@ export class SignUpController implements IController{
 			return badRequest(new InvalidParamError('email'));
 		}
 
-		const newAccount: AddAccountModel = {
+		// TODO: what if this throws an error?
+		const account = await this.addAccount.add({
 			email: body.email,
 			name: body.name,
 			password: body.password,
-		};
-
-		this.addAccount.add(newAccount);
+		});
 
 		return {
 			statusCode: 200,
-			body: {}
+			body: account
 		};
 	}
 }

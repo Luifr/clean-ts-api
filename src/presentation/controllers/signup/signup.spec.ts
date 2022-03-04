@@ -1,6 +1,6 @@
 import { EmailValidator } from '@interfaces/email-validator';
 import { AccountModel } from '@domain/usecases/account';
-import { AddAccount } from '@domain/usecases/add-account';
+import { AddAccount, AddAccountModel } from '@domain/usecases/add-account';
 import { InvalidParamError } from '@errors/invalid-param';
 import { MissingParamError } from '@errors/missing-param';
 import { SignUpController } from './signup';
@@ -23,12 +23,10 @@ describe('SignUpController', () => {
 		}
 
 		class AddAccountStub implements AddAccount {
-			add() {
+			async add(user: AddAccountModel) {
 				const fakeAccount: AccountModel = {
-					id: 'valid_id',
-					name: 'valid_name',
-					email: 'valid@email.com',
-					password: 'valid_password'
+					...user,
+					id: fixtures.userId,
 				};
 
 				return fakeAccount;
@@ -41,7 +39,7 @@ describe('SignUpController', () => {
 	});
 
 	describe('handle', () => {
-		it('Should return 400 if no name is provided', () => {
+		it('Should return 400 if no name is provided', async () => {
 			const httpRequest = {
 				body: {
 					...fixtures.signUpParams,
@@ -49,13 +47,13 @@ describe('SignUpController', () => {
 				}
 			};
 
-			const httpResponse = sut.handle(httpRequest);
+			const httpResponse = await sut.handle(httpRequest);
 
 			expect(httpResponse.statusCode).toBe(400);
-			expect(httpResponse.body).toEqual(new MissingParamError('name'));
+			expect(httpResponse.body).toStrictEqual(new MissingParamError('name'));
 		});
 
-		it('Should return 400 if no email is provided', () => {
+		it('Should return 400 if no email is provided', async () => {
 			const httpRequest = {
 				body: {
 					...fixtures.signUpParams,
@@ -63,13 +61,13 @@ describe('SignUpController', () => {
 				}
 			};
 
-			const httpResponse = sut.handle(httpRequest);
+			const httpResponse = await sut.handle(httpRequest);
 
 			expect(httpResponse.statusCode).toBe(400);
-			expect(httpResponse.body).toEqual(new MissingParamError('email'));
+			expect(httpResponse.body).toStrictEqual(new MissingParamError('email'));
 		});
 
-		it('Should return 400 if no password is provided', () => {
+		it('Should return 400 if no password is provided', async () => {
 			const httpRequest = {
 				body: {
 					...fixtures.signUpParams,
@@ -77,13 +75,13 @@ describe('SignUpController', () => {
 				}
 			};
 
-			const httpResponse = sut.handle(httpRequest);
+			const httpResponse = await sut.handle(httpRequest);
 
 			expect(httpResponse.statusCode).toBe(400);
-			expect(httpResponse.body).toEqual(new MissingParamError('password'));
+			expect(httpResponse.body).toStrictEqual(new MissingParamError('password'));
 		});
 
-		it('Should return 400 if no passwordConfirmation is provided', () => {
+		it('Should return 400 if no passwordConfirmation is provided', async () => {
 			const httpRequest = {
 				body: {
 					...fixtures.signUpParams,
@@ -91,26 +89,26 @@ describe('SignUpController', () => {
 				}
 			};
 
-			const httpResponse = sut.handle(httpRequest);
+			const httpResponse = await sut.handle(httpRequest);
 
 			expect(httpResponse.statusCode).toBe(400);
-			expect(httpResponse.body).toEqual(new MissingParamError('passwordConfirmation'));
+			expect(httpResponse.body).toStrictEqual(new MissingParamError('passwordConfirmation'));
 		});
 
-		it('Should return 400 if email is invalid', () => {
+		it('Should return 400 if email is invalid', async () => {
 			jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false);
 
 			const httpRequest = {
 				body: fixtures.signUpParams
 			};
 
-			const httpResponse = sut.handle(httpRequest);
+			const httpResponse = await sut.handle(httpRequest);
 
 			expect(httpResponse.statusCode).toBe(400);
-			expect(httpResponse.body).toEqual(new InvalidParamError('email'));
+			expect(httpResponse.body).toStrictEqual(new InvalidParamError('email'));
 		});
 
-		it('Should return 400 if passwords are different', () => {
+		it('Should return 400 if passwords are different', async () => {
 			const httpRequest = {
 				body: {
 					...fixtures.signUpParams,
@@ -118,28 +116,29 @@ describe('SignUpController', () => {
 				}
 			};
 
-			const httpResponse = sut.handle(httpRequest);
+			const httpResponse = await sut.handle(httpRequest);
 
 			expect(httpResponse.statusCode).toBe(400);
-			expect(httpResponse.body).toEqual(new InvalidParamError('passwordConfirmation'));
+			expect(httpResponse.body).toStrictEqual(new InvalidParamError('passwordConfirmation'));
 		});
 
-		it('Should return 200', () => {
+		it('Should return 200 if all params are valid', async () => {
 			const httpRequest = {
 				body: fixtures.signUpParams
 			};
 
+			const newAccount = { ...fixtures.signUpParams } as any;
+			delete newAccount.passwordConfirmation;
+
 			jest.spyOn(emailValidatorStub, 'isValid');
 			jest.spyOn(addAccountStub, 'add');
 
-			const httpResponse = sut.handle(httpRequest);
+			const httpResponse = await sut.handle(httpRequest);
 
-			expect(addAccountStub.add).toHaveBeenNthCalledWith(1, {
-				...fixtures.signUpParams,
-				passwordConfirmation: undefined
-			});
+			expect(addAccountStub.add).toHaveBeenNthCalledWith(1, newAccount);
 			expect(emailValidatorStub.isValid).toHaveBeenNthCalledWith(1, fixtures.signUpParams.email);
 			expect(httpResponse.statusCode).toBe(200);
+			expect(httpResponse.body).toStrictEqual({ ...newAccount, id: fixtures.userId });
 		});
 	});
 });

@@ -5,6 +5,9 @@ const signUpParams = {
 	passwordConfirmation: 'anyPassword'
 };
 
+const userId = 'valid_id';
+
 export default {
-	signUpParams
+	signUpParams,
+	userId
 };
