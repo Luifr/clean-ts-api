@@ -7,8 +7,10 @@ module.exports = {
 	collectCoverageFrom: ['<rootDir>/**/*.ts'],
 	coverageDirectory: "../coverage",
 	coveragePathIgnorePatterns: [
+		// TODO: remove this ignore later?
 		"<rootDir>/index.ts",
-		"<rootDir>/presentation/protocols/"
+		"<rootDir>/presentation/interfaces/",
+		"<rootDir>/domain",
 	],
 	coverageProvider: "v8",
 	moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
