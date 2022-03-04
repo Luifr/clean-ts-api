@@ -6,3 +6,10 @@ export const badRequest = (error: Error): IHttpResponse => {
 		body: error
 	};
 };
+
+export const okResponse = <T>(data: T): IHttpResponse<T> => {
+	return {
+		statusCode: 200,
+		body: data
+	};
+};

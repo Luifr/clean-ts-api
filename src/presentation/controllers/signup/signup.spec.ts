@@ -138,6 +138,7 @@ describe('SignUpController', () => {
 			expect(addAccountStub.add).toHaveBeenNthCalledWith(1, newAccount);
 			expect(emailValidatorStub.isValid).toHaveBeenNthCalledWith(1, fixtures.signUpParams.email);
 			expect(httpResponse.statusCode).toBe(200);
+			// TODO: mock id generator (when there is an id generator service)
 			expect(httpResponse.body).toStrictEqual({ ...newAccount, id: fixtures.userId });
 		});
 	});

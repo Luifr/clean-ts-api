@@ -1,7 +1,7 @@
 import { AddAccount } from '@domain/usecases/add-account';
 import { InvalidParamError } from '@errors/invalid-param';
 import { MissingParamError } from '@errors/missing-param';
-import { badRequest } from '@helpers/http-helper';
+import { badRequest, okResponse } from '@helpers/http-helper';
 import { IController } from '@interfaces/controller';
 import { EmailValidator } from '@interfaces/email-validator';
 import { IHttpRequest, IHttpResponse } from '@interfaces/http';
@@ -32,16 +32,13 @@ export class SignUpController implements IController{
 			return badRequest(new InvalidParamError('email'));
 		}
 
-		// TODO: what if this throws an error?
+		// TODO: what if this throws an error? Add test for it
 		const account = await this.addAccount.add({
 			email: body.email,
 			name: body.name,
 			password: body.password,
 		});
 
-		return {
-			statusCode: 200,
-			body: account
-		};
+		return okResponse(account);
 	}
 }
