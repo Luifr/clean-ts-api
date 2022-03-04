@@ -1,6 +1,8 @@
-import { InvalidParamError } from '../errors/invalid-param';
-import { MissingParamError } from '../errors/missing-param';
-import { EmailValidator } from '../protocols/email-validator';
+import { EmailValidator } from '@interfaces/email-validator';
+import { AccountModel } from '../../../domain/usecases/account';
+import { AddAccount } from '../../../domain/usecases/add-account';
+import { InvalidParamError } from '../../errors/invalid-param';
+import { MissingParamError } from '../../errors/missing-param';
 import { SignUpController } from './signup';
 
 import fixtures from './signup.fixtures';
@@ -9,6 +11,7 @@ describe('SignUpController', () => {
 
 	// sut === System under test
 	let sut: SignUpController;
+	let addAccountStub: AddAccount;
 	let emailValidatorStub: EmailValidator;
 
 	beforeEach(() => {
@@ -19,8 +22,22 @@ describe('SignUpController', () => {
 			}
 		}
 
+		class AddAccountStub implements AddAccount {
+			add() {
+				const fakeAccount: AccountModel = {
+					id: 'valid_id',
+					name: 'valid_name',
+					email: 'valid@email.com',
+					password: 'valid_password'
+				};
+
+				return fakeAccount;
+			}
+		}
+
 		emailValidatorStub = new EmailValidatorStub();
-		sut = new SignUpController(emailValidatorStub);
+		addAccountStub = new AddAccountStub();
+		sut = new SignUpController(emailValidatorStub, addAccountStub);
 	});
 
 	describe('handle', () => {
@@ -108,14 +125,19 @@ describe('SignUpController', () => {
 		});
 
 		it('Should return 200', () => {
-			jest.spyOn(emailValidatorStub, 'isValid');
-
 			const httpRequest = {
 				body: fixtures.signUpParams
 			};
 
+			jest.spyOn(emailValidatorStub, 'isValid');
+			jest.spyOn(addAccountStub, 'add');
+
 			const httpResponse = sut.handle(httpRequest);
 
+			expect(addAccountStub.add).toHaveBeenNthCalledWith(1, {
+				...fixtures.signUpParams,
+				passwordConfirmation: undefined
+			});
 			expect(emailValidatorStub.isValid).toHaveBeenNthCalledWith(1, fixtures.signUpParams.email);
 			expect(httpResponse.statusCode).toBe(200);
 		});
