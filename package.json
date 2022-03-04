@@ -15,7 +15,8 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged && bash scripts/reject-by-pattern.sh"
+      "pre-commit": "lint-staged && bash scripts/reject-by-pattern.sh",
+      "pre-push": "npm run test:ci"
     }
   },
   "lint-staged": {
