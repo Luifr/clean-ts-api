@@ -3,6 +3,8 @@ import { MissingParamError } from '../errors/missing-param';
 import { EmailValidator } from '../protocols/email-validator';
 import { SignUpController } from './signup';
 
+import fixtures from './signup.fixtures';
+
 describe('SignUpController', () => {
 
 	// sut === System under test
@@ -25,10 +27,8 @@ describe('SignUpController', () => {
 		it('Should return 400 if no name is provided', () => {
 			const httpRequest = {
 				body: {
-				// name: 'anyName',
-					email: 'any@any.com',
-					password: 'anyPassword',
-					passwordConfirmation: 'anyPassword'
+					...fixtures.signUpParams,
+					name: undefined
 				}
 			};
 
@@ -41,10 +41,8 @@ describe('SignUpController', () => {
 		it('Should return 400 if no email is provided', () => {
 			const httpRequest = {
 				body: {
-					name: 'anyName',
-					// email: 'any@any.com',
-					password: 'anyPassword',
-					passwordConfirmation: 'anyPassword'
+					...fixtures.signUpParams,
+					email: undefined
 				}
 			};
 
@@ -57,10 +55,8 @@ describe('SignUpController', () => {
 		it('Should return 400 if no password is provided', () => {
 			const httpRequest = {
 				body: {
-					name: 'anyName',
-					email: 'any@any.com',
-					// password: 'anyPassword',
-					passwordConfirmation: 'anyPassword'
+					...fixtures.signUpParams,
+					password: undefined
 				}
 			};
 
@@ -73,10 +69,8 @@ describe('SignUpController', () => {
 		it('Should return 400 if no passwordConfirmation is provided', () => {
 			const httpRequest = {
 				body: {
-					name: 'anyName',
-					email: 'any@any.com',
-					password: 'anyPassword',
-				// passwordConfirmation: 'anyPassword'
+					...fixtures.signUpParams,
+					passwordConfirmation: undefined
 				}
 			};
 
@@ -90,12 +84,7 @@ describe('SignUpController', () => {
 			jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false);
 
 			const httpRequest = {
-				body: {
-					name: 'anyName',
-					email: 'invalid@any.com',
-					password: 'anyPassword',
-					passwordConfirmation: 'anyPassword'
-				}
+				body: fixtures.signUpParams
 			};
 
 			const httpResponse = sut.handle(httpRequest);
@@ -105,17 +94,15 @@ describe('SignUpController', () => {
 		});
 
 		it('Should return 200', () => {
+			jest.spyOn(emailValidatorStub, 'isValid');
+
 			const httpRequest = {
-				body: {
-					name: 'anyName',
-					email: 'any@any.com',
-					password: 'anyPassword',
-					passwordConfirmation: 'anyPassword'
-				}
+				body: fixtures.signUpParams
 			};
 
 			const httpResponse = sut.handle(httpRequest);
 
+			expect(emailValidatorStub.isValid).toHaveBeenNthCalledWith(1, fixtures.signUpParams.email);
 			expect(httpResponse.statusCode).toBe(200);
 		});
 	});
