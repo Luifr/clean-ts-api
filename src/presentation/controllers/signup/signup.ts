@@ -1,7 +1,7 @@
-import { AddAccount, AddAccountModel } from '../../../domain/usecases/add-account';
-import { InvalidParamError } from '../../errors/invalid-param';
-import { MissingParamError } from '../../errors/missing-param';
-import { badRequest } from '../../helpers/http-helper';
+import { AddAccount, AddAccountModel } from '@domain/usecases/add-account';
+import { InvalidParamError } from '@errors/invalid-param';
+import { MissingParamError } from '@errors/missing-param';
+import { badRequest } from '@helpers/http-helper';
 import { IController } from '@interfaces/controller';
 import { EmailValidator } from '@interfaces/email-validator';
 import { IHttpRequest, IHttpResponse } from '@interfaces/http';

@@ -1,4 +1,4 @@
-import { IHttpRequest, IHttpResponse } from './http';
+import { IHttpRequest, IHttpResponse } from '@interfaces/http';
 
 export interface IController {
 	handle(httpRequest: IHttpRequest): IHttpResponse;

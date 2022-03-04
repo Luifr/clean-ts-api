@@ -1,4 +1,4 @@
-import { AccountModel } from './account';
+import { AccountModel } from '@domain/usecases/account';
 
 export type AddAccountModel = Omit<AccountModel, 'id'>;
 
