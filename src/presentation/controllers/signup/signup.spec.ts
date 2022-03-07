@@ -6,6 +6,7 @@ import { MissingParamError } from '@presentation/errors/missing-param';
 import { SignUpController } from './signup';
 
 import fixtures from './signup.fixtures';
+import { ServerError } from '@presentation/errors/server-error';
 
 describe('SignUpController', () => {
 
@@ -122,6 +123,17 @@ describe('SignUpController', () => {
 			expect(httpResponse.body).toStrictEqual(new InvalidParamError('passwordConfirmation'));
 		});
 
+		it('Should return 500 if add account throws', async () => {
+			const httpRequest = { body: fixtures.signUpParams };
+
+			jest.spyOn(addAccountStub, 'add').mockRejectedValueOnce(new Error());
+
+			const httpResponse = await sut.handle(httpRequest);
+
+			expect(httpResponse.statusCode).toBe(500);
+			expect(httpResponse.body).toStrictEqual(new ServerError());
+		});
+
 		it('Should return 200 if all params are valid', async () => {
 			const httpRequest = {
 				body: fixtures.signUpParams
@@ -130,16 +142,17 @@ describe('SignUpController', () => {
 			const newAccount = { ...fixtures.signUpParams } as any;
 			delete newAccount.passwordConfirmation;
 
+			const addAccountMockResponse = { ...newAccount, id: 'id' } as any;
+
 			jest.spyOn(emailValidatorStub, 'isValid');
-			jest.spyOn(addAccountStub, 'add');
+			jest.spyOn(addAccountStub, 'add').mockResolvedValue(addAccountMockResponse);
 
 			const httpResponse = await sut.handle(httpRequest);
 
 			expect(addAccountStub.add).toHaveBeenNthCalledWith(1, newAccount);
 			expect(emailValidatorStub.isValid).toHaveBeenNthCalledWith(1, fixtures.signUpParams.email);
 			expect(httpResponse.statusCode).toBe(200);
-			// TODO: mock id generator (when there is an id generator service)
-			expect(httpResponse.body).toStrictEqual({ ...newAccount, id: fixtures.userId });
+			expect(httpResponse.body).toStrictEqual(addAccountMockResponse);
 		});
 	});
 });
