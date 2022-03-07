@@ -14,10 +14,10 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": "./src",
     "paths": {
-      "@data": ["./data/*"],
+      "@data/*": ["./data/*"],
       "@domain/*": ["./domain/*"],
       "@presentation/*": ["./presentation/*"],
-      "@utils": ["./utils/*"]
+      "@utils/*": ["./utils/*"]
     },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
