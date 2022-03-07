@@ -1,4 +1,4 @@
-import { IHttpResponse } from '@interfaces/http';
+import { IHttpResponse } from '@presentation/interfaces/http';
 
 export const badRequest = (error: Error): IHttpResponse => {
 	return {

@@ -14,10 +14,9 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": "./src",
     "paths": {
-      "@interfaces/*": ["./presentation/interfaces/*"],
-      "@errors/*": ["./presentation/errors/*"],
-      "@helpers/*": ["./presentation/helpers/*"],
+      "@data": ["./data/*"],
       "@domain/*": ["./domain/*"],
+      "@presentation/*": ["./presentation/*"],
       "@utils": ["./utils/*"]
     },
     "allowSyntheticDefaultImports": true,

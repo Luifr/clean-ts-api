@@ -11,6 +11,7 @@ module.exports = {
 		"<rootDir>/index.ts",
 		"<rootDir>/presentation/interfaces/",
 		"<rootDir>/domain",
+		"<rootDir>/presentation/errors",
 	],
 	coverageProvider: "v8",
 	moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),

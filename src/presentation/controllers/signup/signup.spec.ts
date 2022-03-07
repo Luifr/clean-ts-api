@@ -1,8 +1,8 @@
-import { EmailValidator } from '@interfaces/email-validator';
+import { EmailValidator } from '@presentation/interfaces/email-validator';
 import { AccountModel } from '@domain/usecases/account';
 import { AddAccount, AddAccountModel } from '@domain/usecases/add-account';
-import { InvalidParamError } from '@errors/invalid-param';
-import { MissingParamError } from '@errors/missing-param';
+import { InvalidParamError } from '@presentation/errors/invalid-param';
+import { MissingParamError } from '@presentation/errors/missing-param';
 import { SignUpController } from './signup';
 
 import fixtures from './signup.fixtures';
