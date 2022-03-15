@@ -118,3 +118,5 @@ dist
 # temp files
 __*
 debug.ts
+
+globalConfig.json

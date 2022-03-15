@@ -6,6 +6,7 @@ const { compilerOptions } = require('./tsconfig.json');
 module.exports = {
 	collectCoverageFrom: ['<rootDir>/**/*.ts'],
 	coverageDirectory: "../coverage",
+	watchPathIgnorePatterns: ['globalConfig'],
 	coveragePathIgnorePatterns: [
 		// TODO: remove this ignore later?
 		"<rootDir>/index.ts",
