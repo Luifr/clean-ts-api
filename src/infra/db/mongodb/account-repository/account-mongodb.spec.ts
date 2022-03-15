@@ -13,8 +13,11 @@ describe('AccountMongoRepository', () => {
 		await client.close();
 	});
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		sut = new AccountMongoRepository(client);
+
+		// Before each test, drop the collection
+		await client.db().collection('accounts').deleteMany({});
 	});
 
 	describe('add', () => {
